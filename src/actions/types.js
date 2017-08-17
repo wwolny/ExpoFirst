@@ -1,2 +1,7 @@
-export const FB_LOGIN_SUCCESS = 'fb_login_success';
-export const FB_LOGIN_FAIL = 'fb_login_fail';
+export const EMAIL_CHANGED = 'email_changed';
+export const PASSWORD_CHANGED = 'password_changed';
+export const LOGIN_USER_SUCCESS = 'login_user_success';
+export const LOGIN_USER_FAIL = 'login_user_fail';
+export const LOGIN_USER = 'login_user';
+
+export const PLACE_FETCH_SUCCESS = 'place_fetch_success';

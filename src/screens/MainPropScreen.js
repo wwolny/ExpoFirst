@@ -1,15 +1,24 @@
 import React, { Component } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View } from 'react-native';
+import { Card, CardSection, HeaderSection } from '../common';
+import { ListOfPropositions } from '../components/ListOfPropositions';
 
 export default class MainPropScreen extends Component {
   static navigationOptions = {
-    
+
   }
   render() {
     return (
-      <Text>
-          MainPropScreen
-      </Text>
+      <View>
+        <HeaderSection>
+            MainPropScreen
+        </HeaderSection>
+        <Card>
+          <CardSection>
+            <ListOfPropositions />
+          </CardSection>
+        </Card>
+      </View>
     );
   }
 }

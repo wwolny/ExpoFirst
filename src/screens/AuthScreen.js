@@ -1,41 +1,82 @@
 import React, { Component } from 'react';
-import { View, Text, AsyncStorage } from 'react-native';
+import { Text } from 'react-native';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import { emailChanged, passwordChanged, loginUser } from '../actions';
+import { Spinner, Button, Card, CardSection, Input } from '../common';
 
 class AuthScreen extends Component {
-  static navigationOptions = {
-    tabBarVisible: true
+  onEmailChange(text) {
+      this.props.emailChanged(text);
   }
 
-  componentDidMount() {
-    this.props.facebookLogin();
-    this.onAuthComplete(this.props);
+  onPasswordChange(text) {
+      this.props.passwordChanged(text);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.onAuthComplete(nextProps);
+  onButtonPress() {
+    const { email, password } = this.props;
+
+    this.props.loginUser({ email, password });
   }
 
-  onAuthComplete(props) {
-    if (props.token) {
-      this.props.navigation.navigate('mainProp');
+  renderButton() {
+    if (this.props.loading) {
+      return <Spinner size="large" />;
     }
+    return (
+      <Button onPress={this.onButtonPress.bind(this)}>
+        Zaloguj się!
+      </Button>
+    );
   }
 
   render() {
     return (
-      <View>
-        <Text>
-          AuthScreen
+      <Card>
+        <CardSection>
+          <Input
+            label="Email"
+            placeholder="email@gmail.com"
+            onChangeText={this.onEmailChange.bind(this)}
+            value={this.props.email}
+          />
+        </CardSection>
+
+        <CardSection>
+          <Input
+            secureTextEntry
+            label="Password"
+            placeholder="password"
+            onChangeText={this.onPasswordChange.bind(this)}
+            value={this.props.password}
+          />
+        </CardSection>
+        <Text style={styles.errorTextStyle}>
+          {this.props.error}
         </Text>
-      </View>
+
+        <CardSection>
+          {this.renderButton()}
+        </CardSection>
+      </Card>
     );
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { token: auth.token };
-}
+const styles = {
+  errorTextStyle: {
+    fontSize: 20,
+    alignSelf: 'center',
+    color: 'red'
+  }
+};
 
-export default connect(mapStateToProps, actions)(AuthScreen);
+const mapStateToProps = ({ auth }) => {
+  const { email, password, error, loading } = auth;
+
+  return { email, password, error, loading };
+};
+
+export default connect(mapStateToProps, {
+  emailChanged, passwordChanged, loginUser
+})(AuthScreen);

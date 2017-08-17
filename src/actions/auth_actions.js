@@ -1,34 +1,49 @@
-import { AsyncStorage } from 'react-native';
-import Expo from 'expo';
-
+import firebase from 'firebase';
 import {
-  FB_LOGIN_SUCCESS,
-  FB_LOGIN_FAIL
+  EMAIL_CHANGED,
+  PASSWORD_CHANGED,
+  LOGIN_USER_SUCCESS,
+  LOGIN_USER_FAIL,
+  LOGIN_USER
 } from './types';
 
-//How to use AsyncStorage:
-//AsyncStrage.setItem('fb_token', token);
-//AsyncStrage.getItem('fb_token');
-
-export const facebookLogin = () => async dispatch => {
-  let token = await AsyncStorage.getItem('fb_token');
-
-  if (token) {
-    dispatch ({ type: FB_LOGIN_SUCCESS, payload: token });
-  } else {
-    doFacebookLogin(dispatch);
-  }
+export const emailChanged = (text) => {
+  return {
+    type: EMAIL_CHANGED,
+    payload: text
+  };
 };
 
-const doFacebookLogin = async dispatch => {
-  let { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('1626420490712200', {
-    permissions: ['public_profile']
+export const passwordChanged = (text) => {
+  return {
+    type: PASSWORD_CHANGED,
+    payload: text
+  };
+};
+
+export const loginUser = ({ email, password }) => {
+  return (dispatch) => {
+    dispatch({ type: LOGIN_USER });
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(user => loginUserSuccess(dispatch, user))
+      .catch(() => {
+        firebase.auth().createUserWithEmailAndPassword(email, password)
+          .then(user => loginUserSuccess(dispatch, user))
+          .catch(() => loginUserFail(dispatch));
+      });
+  };
+};
+
+const loginUserFail = (dispatch) => {
+  dispatch({ type: LOGIN_USER_FAIL });
+};
+
+const loginUserSuccess = (dispatch, user) => {
+  dispatch({
+    type: LOGIN_USER_SUCCESS,
+    payload: user
   });
 
-  if (type === 'cancel') {
-    return dispatch({ type: FB_LOGIN_FAIL });
-  }
-
-  await AsyncStorage.setItem('fb_token', token);
-  dispatch ({ type: FB_LOGIN_SUCCESS, payload: token });
+  this.props.navigation.navigate('MainProp');
 };

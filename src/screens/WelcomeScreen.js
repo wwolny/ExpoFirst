@@ -1,31 +1,12 @@
-import _ from 'lodash';
 import React, { Component } from 'react';
-import { Image, View, Text, AsyncStorage } from 'react-native';
-import { AppLoading } from 'expo';
+import { Image, Text } from 'react-native';
 import { CardSection, ContinueButton } from '../common';
 
 class WelcomeScreen extends Component {
   static navigationOptions = {
     tabBarVisible: false
   }
-  state = { token: true }
-
-  async componentWillMount() {
-    let token = await AsyncStorage.getItem('fb_token');
-
-    if (token) {
-      this.props.navigation.navigate('mainProp');
-      this.setState({ token: false });
-    } else {
-      this.setState({ token: false });
-    }
-  }
-
   render() {
-    if (this.state.token === true) {
-      return <AppLoading />;
-    }
-
     return (
       <Image
         source={require('../img/welcome.jpg')}

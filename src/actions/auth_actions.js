@@ -1,22 +1,33 @@
 import firebase from 'firebase';
 import {
-  EMAIL_CHANGED,
-  PASSWORD_CHANGED,
+  AUTH_EMAIL_CHANGED,
+  AUTH_PASSWORD_CHANGED,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAIL,
-  LOGIN_USER
+  LOGIN_USER,
+  FACEBOOK_LOGIN_USER,
 } from './types';
 
-export const emailChanged = (text) => {
+export const FacebookLoginUser = () => {
+  return (dispatch) => {
+    dispatch({ type: FACEBOOK_LOGIN_USER });
+
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then(user => loginUserSuccess(dispatch, user))
+      .catch(() => loginUserFail(dispatch));
+  };
+};
+
+export const emailChangedAuth = (text) => {
   return {
-    type: EMAIL_CHANGED,
+    type: AUTH_EMAIL_CHANGED,
     payload: text
   };
 };
 
-export const passwordChanged = (text) => {
+export const passwordChangedAuth = (text) => {
   return {
-    type: PASSWORD_CHANGED,
+    type: AUTH_PASSWORD_CHANGED,
     payload: text
   };
 };
@@ -27,11 +38,7 @@ export const loginUser = ({ email, password }) => {
 
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then(user => loginUserSuccess(dispatch, user))
-      .catch(() => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-          .then(user => loginUserSuccess(dispatch, user))
-          .catch(() => loginUserFail(dispatch));
-      });
+      .catch(() => loginUserFail(dispatch));
   };
 };
 
@@ -44,6 +51,4 @@ const loginUserSuccess = (dispatch, user) => {
     type: LOGIN_USER_SUCCESS,
     payload: user
   });
-  console.log('sdasd');
-  this.props.navigation.navigate('MainProp');
 };

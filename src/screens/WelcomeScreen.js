@@ -3,9 +3,6 @@ import { Image, Text } from 'react-native';
 import { CardSection, ContinueButton } from '../common';
 
 class WelcomeScreen extends Component {
-  static navigationOptions = {
-    tabBarVisible: false
-  }
   render() {
     return (
       <Image

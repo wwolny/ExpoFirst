@@ -17,7 +17,10 @@ import CategoryPropScreen from './src/screens/CategoryPropScreen';
 import MyAccScreen from './src/screens/MyAccScreen';
 
 export default class App extends React.Component {
-  state = { loggedIn: null };
+  constructor(props) {
+    super(props);
+    this.state = { User: null };
+  }
 
   componentWillMount() {
     const firebaseConfig = {
@@ -32,22 +35,11 @@ export default class App extends React.Component {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ loggedIn: true });
+        this.setState({ User: firebase.auth().currentUser });
       } else {
-        this.setState({ loggedIn: false });
+        this.setState({ User: null });
       }
     });
-  }
-
-  renderContent() {
-    switch (this.state.loggedIn) {
-      case true:
-        return (() => this.props.navigation.navigate('mainProp'));
-      case false:
-        return (() => this.props.navigation.navigate('welcome'));
-      default:
-        return <Spinner size="large" style={styles.SpinnerStyle} />;
-    }
   }
 
   render() {
@@ -82,7 +74,7 @@ export default class App extends React.Component {
       }
     }, {
       navigationOptions: {
-          tabBarVisible: true
+          tabBarVisible: false
       },
       swipeEnabled: false,
       lazy: true,
@@ -104,5 +96,5 @@ const styles = {
     alignItems: 'center'
   }
 };
-/*{this.renderContent()}*/
+
 Expo.registerRootComponent(App);

@@ -1,25 +1,45 @@
 import React, { Component } from 'react';
+import firebase from 'firebase';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
-import { emailChanged, passwordChanged, loginUser } from '../actions';
+import { emailChangedAuth, passwordChangedAuth, loginUser } from '../actions';
 import { Spinner, Button, Card, CardSection, Input } from '../common';
+import { CreateAccForm } from '../components/CreateAccForm';
 
 class AuthScreen extends Component {
   onEmailChange(text) {
-      this.props.emailChanged(text);
+      this.props.emailChangedAuth(text);
   }
 
   onPasswordChange(text) {
-      this.props.passwordChanged(text);
+      this.props.passwordChangedAuth(text);
   }
 
   onButtonPress() {
     const { email, password } = this.props;
 
     this.props.loginUser({ email, password });
+    if (firebase.auth().currentUser !== null) {
+        this.props.navigation.navigate('mainProp');
+    }
   }
 
-  renderButton() {
+  onButtonCreatePress() {
+    return <CreateAccForm />;
+  }
+
+  renderCreateButton() {
+    if (this.props.createLoading) {
+      return <Spinner size="large" />;
+    }
+    return (
+      <Button onPress={this.onButtonCreatePress.bind(this)}>
+        Stwórz konto!
+      </Button>
+    );
+  }
+
+  renderLogInButton() {
     if (this.props.loading) {
       return <Spinner size="large" />;
     }
@@ -54,9 +74,11 @@ class AuthScreen extends Component {
         <Text style={styles.errorTextStyle}>
           {this.props.error}
         </Text>
-
         <CardSection>
-          {this.renderButton()}
+          {this.renderLogInButton()}
+        </CardSection>
+        <CardSection>
+          {this.renderCreateButton()}
         </CardSection>
       </Card>
     );
@@ -78,5 +100,5 @@ const mapStateToProps = ({ auth }) => {
 };
 
 export default connect(mapStateToProps, {
-  emailChanged, passwordChanged, loginUser
+  emailChangedAuth, passwordChangedAuth, loginUser
 })(AuthScreen);

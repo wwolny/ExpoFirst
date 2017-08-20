@@ -44,6 +44,6 @@ const loginUserSuccess = (dispatch, user) => {
     type: LOGIN_USER_SUCCESS,
     payload: user
   });
-
+  console.log('sdasd');
   this.props.navigation.navigate('MainProp');
 };

@@ -5,17 +5,14 @@ import { ListOfPropositions } from '../components/ListOfPropositions';
 
 export default class MainPropScreen extends Component {
   static navigationOptions = {
-
+    header: null
   }
   render() {
     return (
       <View>
-        <HeaderSection>
-            MainPropScreen
-        </HeaderSection>
+        <HeaderSection headerText='MainPropScreen' />
         <Card>
           <CardSection>
-            <ListOfPropositions />
           </CardSection>
         </Card>
       </View>

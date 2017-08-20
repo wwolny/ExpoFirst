@@ -42,12 +42,11 @@ export default class App extends React.Component {
   renderContent() {
     switch (this.state.loggedIn) {
       case true:
-        this.props.navigation.navigate('mainProp');
-        return;
+        return (() => this.props.navigation.navigate('mainProp'));
       case false:
-        return;
+        return (() => this.props.navigation.navigate('welcome'));
       default:
-        return <Spinner size="large" />;
+        return <Spinner size="large" style={styles.SpinnerStyle} />;
     }
   }
 
@@ -92,13 +91,18 @@ export default class App extends React.Component {
 
     return (
       <Provider store={store}>
-        <View>
-          <MainNavigator />
-          {this.renderContent()}
-        </View>
+        <MainNavigator />
       </Provider>
     );
   }
 }
 
+const styles = {
+  SpinnerStyle: {
+    justifyContent: 'center',
+    flex: 1,
+    alignItems: 'center'
+  }
+};
+/*{this.renderContent()}*/
 Expo.registerRootComponent(App);

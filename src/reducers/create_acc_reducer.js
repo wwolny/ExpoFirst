@@ -7,8 +7,8 @@ import {
 } from '../actions/types';
 
 const INITIAL_STATE = {
-  email: '',
-  password: '',
+  newemail: '',
+  newpassword: '',
   user: null,
   error: '',
   loading: false,
@@ -18,18 +18,18 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case CREATE_EMAIL_CHANGED:
-      return { ...state, email: action.payload };
+      return { ...state, newemail: action.payload };
     case CREATE_PASSWORD_CHANGED:
-      return { ...state, password: action.payload };
+      return { ...state, newpassword: action.payload };
     case CREATE_USER_WITH_EMAIL_AND_PASSWORD:
       return { ...state, loading: true, error: '' };
     case CREATE_USER_SUCCESS:
-      return { ...state, ...INITIAL_STATE, user: action.payload };//Czy na pewno ation.payload??
+      return { ...state, ...INITIAL_STATE, user: action.payload };
     case CREATE_USER_FAIL:
       return {
         ...state,
         error: 'Ten mail już istnieje, hasło powinno mieć 6 znaków',
-        password: '',
+        newpassword: '',
         loading: false
     };
     default:

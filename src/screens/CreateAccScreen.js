@@ -30,20 +30,20 @@ class CreateAccScreen extends Component {
   }
 
   onPasswordChange(text) {
-      console.log(this.password);
       this.props.passwordChangedCreate(text);
   }
 
   onButtonEmailPress() {
-    const { email, password } = this.props;
-    console.log(password);
-    this.props.createUserWithEmailAndPassword({ email, password });
+    const { newemail, newpassword } = this.props;
+
+    this.props.createUserWithEmailAndPassword({ newemail, newpassword });
   }
 
   renderButtonEmail() {
     if (this.props.loading) {
       return <Spinner size="large" />;
     }
+    console.log(this.props.newpassword);
     return (
       <Button onPress={this.onButtonEmailPress.bind(this)}>
         Stwórz!
@@ -60,7 +60,7 @@ class CreateAccScreen extends Component {
               label="Email"
               placeholder="email@gmail.com"
               onChangeText={this.onEmailChange.bind(this)}
-              value={this.props.email}
+              value={this.props.newemail}
             />
           </CardSection>
 
@@ -70,7 +70,7 @@ class CreateAccScreen extends Component {
               label="Password"
               placeholder="password"
               onChangeText={this.onPasswordChange.bind(this)}
-              value={this.props.password}
+              value={this.props.newpassword}
             />
           </CardSection>
 
@@ -100,9 +100,9 @@ const styles = {
   }
 };
 const mapStateToProps = ({ createAcc }) => {
-  const { email, passowrd, error, loading } = createAcc;
+  const { newemail, newpassword, error, loading } = createAcc;
 
-  return { email, passowrd, error, loading };
+  return { newemail, newpassword, error, loading };
 };
 
 export default connect(mapStateToProps, {

@@ -20,12 +20,11 @@ class AuthScreen extends Component {
   }
 
   onEmailChange(text) {
-      this.props.emailChangedAuth(text);
+    this.props.emailChangedAuth(text);
   }
 
   onPasswordChange(text) {
-    console.log(this.passowrd);
-      this.props.passwordChangedAuth(text);
+    this.props.passwordChangedAuth(text);
   }
 
   onButtonLoginPress() {
@@ -43,6 +42,7 @@ class AuthScreen extends Component {
     if (this.props.loading) {
       return <Spinner size="large" />;
     }
+
     return (
       <Button onPress={this.onButtonLoginPress.bind(this)}>
       Zaloguj się!
@@ -73,7 +73,7 @@ class AuthScreen extends Component {
 
         <CardSection>
           <Input
-            secureTextEntry
+            //secureTextEntry
             label="Password"
             placeholder="password"
             onChangeText={this.onPasswordChange.bind(this)}

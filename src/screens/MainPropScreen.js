@@ -11,7 +11,7 @@ export default class MainPropScreen extends Component {
 
   LogOut() {
     firebase.auth().signOut();
-    this.props.navigation.navigate('welcome');
+    this.props.navigation.navigate('auth');
   }
 
   render() {

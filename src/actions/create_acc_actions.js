@@ -24,7 +24,8 @@ export const passwordChangedCreate = (text) => {
 export const createUserWithEmailAndPassword = ({ email, password }) => {
   return (dispatch) => {
     dispatch({ type: CREATE_USER_WITH_EMAIL_AND_PASSWORD });
-
+    console.log(password);
+    console.log(email);
     firebase.auth().createUserWithEmailAndPassword(email, password)
       .then(user => createUserSuccess(dispatch, user))
       .catch(() => createUserFail(dispatch));

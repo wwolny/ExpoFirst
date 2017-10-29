@@ -2,41 +2,41 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import { Text } from 'react-native';
 import { connect } from 'react-redux';
-import { emailChangedAuth, passwordChangedAuth, loginUser } from '../actions';
-import { Spinner, Button, Card, CardSection, Input } from '../common';
-import { CreateAccForm } from '../components/CreateAccForm';
+import {
+  emailChangedAuth,
+  passwordChangedAuth,
+  loginUser,
+  blankLogInData
+} from '../actions';
+import { HeaderSection, Spinner, Button, Card, CardSection, Input } from '../common';
 
 class AuthScreen extends Component {
+  componentWillMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.props.navigation.navigate('mainProp');
+      }
+    });
+  }
+
   onEmailChange(text) {
       this.props.emailChangedAuth(text);
   }
 
   onPasswordChange(text) {
+    console.log(this.passowrd);
       this.props.passwordChangedAuth(text);
   }
 
-  onButtonPress() {
+  onButtonLoginPress() {
     const { email, password } = this.props;
 
     this.props.loginUser({ email, password });
-    if (firebase.auth().currentUser !== null) {
-        this.props.navigation.navigate('mainProp');
-    }
   }
 
   onButtonCreatePress() {
-    return <CreateAccForm />;
-  }
-
-  renderCreateButton() {
-    if (this.props.createLoading) {
-      return <Spinner size="large" />;
-    }
-    return (
-      <Button onPress={this.onButtonCreatePress.bind(this)}>
-        Stwórz konto!
-      </Button>
-    );
+    this.props.blankLogInData();
+    this.props.navigation.navigate('createAcc');
   }
 
   renderLogInButton() {
@@ -44,8 +44,16 @@ class AuthScreen extends Component {
       return <Spinner size="large" />;
     }
     return (
-      <Button onPress={this.onButtonPress.bind(this)}>
-        Zaloguj się!
+      <Button onPress={this.onButtonLoginPress.bind(this)}>
+      Zaloguj się!
+      </Button>
+    );
+  }
+
+  renderCreateButton() {
+    return (
+      <Button onPress={this.onButtonCreatePress.bind(this)}>
+        Stwórz konto!
       </Button>
     );
   }
@@ -53,6 +61,7 @@ class AuthScreen extends Component {
   render() {
     return (
       <Card>
+        <HeaderSection headerText="PLACES!!!" />
         <CardSection>
           <Input
             label="Email"
@@ -71,12 +80,15 @@ class AuthScreen extends Component {
             value={this.props.password}
           />
         </CardSection>
+
         <Text style={styles.errorTextStyle}>
           {this.props.error}
         </Text>
+
         <CardSection>
           {this.renderLogInButton()}
         </CardSection>
+
         <CardSection>
           {this.renderCreateButton()}
         </CardSection>
@@ -96,9 +108,25 @@ const styles = {
 const mapStateToProps = ({ auth }) => {
   const { email, password, error, loading } = auth;
 
-  return { email, password, error, loading };
+  return {
+    email,
+    password,
+    error,
+    loading
+  };
 };
 
 export default connect(mapStateToProps, {
-  emailChangedAuth, passwordChangedAuth, loginUser
+  emailChangedAuth,
+  passwordChangedAuth,
+  loginUser,
+  blankLogInData
 })(AuthScreen);
+
+/*
+    if (firebase.auth().currentUser !== null) {
+        this.props.navigation.navigate('mainProp');
+    } else {
+      this.props.navigation.navigate('auth');
+    }
+*/

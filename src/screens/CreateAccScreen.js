@@ -16,37 +16,45 @@ import {
   HeaderSection
 } from '../common';
 
-class CreateAccForm extends Component {
+class CreateAccScreen extends Component {
+  componentWillMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.props.navigation.navigate('mainProp');
+      }
+    });
+  }
+
   onEmailChange(text) {
     this.props.emailChangedCreate(text);
   }
 
   onPasswordChange(text) {
+      console.log(this.password);
       this.props.passwordChangedCreate(text);
   }
 
   onButtonEmailPress() {
     const { email, password } = this.props;
-
+    console.log(password);
     this.props.createUserWithEmailAndPassword({ email, password });
   }
-  
+
   renderButtonEmail() {
     if (this.props.loading) {
-      return <Spinner />;
+      return <Spinner size="large" />;
     }
     return (
-      <Button onPress={this.onButtonEmailPress().bind(this)}>
+      <Button onPress={this.onButtonEmailPress.bind(this)}>
         Stwórz!
-      <Button />
+      </Button>
     );
   }
 
   render() {
     return (
-      <View>
-        <HeaderSection headerText="Stwórz konto!" />
         <Card>
+          <HeaderSection headerText="Stwórz konto!" />
           <CardSection>
             <Input
               label="Email"
@@ -58,36 +66,47 @@ class CreateAccForm extends Component {
 
           <CardSection>
             <Input
+              secureTextEntry
               label="Password"
               placeholder="password"
               onChangeText={this.onPasswordChange.bind(this)}
               value={this.props.password}
             />
           </CardSection>
+
+          <Text style={styles.errorTextStyle}>
+            {this.props.error}
+          </Text>
+
           <CardSection>
             {this.renderButtonEmail()}
           </CardSection>
 
           <CardSection>
-            <Button onPress={this.setState(this.state.createForm: false)}>
+            <Button onPress={() => this.props.navigation.navigate('auth')}>
               Wróć!
             </Button>
           </CardSection>
         </Card>
-      </View>
     );
   }
 }
-/*const mapStateToProps = ({ createAcc }) => {
-  const { email, password, error, loading } = createAcc;
 
-  return { email, password, error, loading };
+const styles = {
+  errorTextStyle: {
+    fontSize: 20,
+    alignSelf: 'center',
+    color: 'red'
+  }
+};
+const mapStateToProps = ({ createAcc }) => {
+  const { email, passowrd, error, loading } = createAcc;
+
+  return { email, passowrd, error, loading };
 };
 
 export default connect(mapStateToProps, {
   emailChangedCreate,
   passwordChangedCreate,
   createUserWithEmailAndPassword
-})(CreateAccForm);
-*/
-export default CreateAccForm;
+})(CreateAccScreen);

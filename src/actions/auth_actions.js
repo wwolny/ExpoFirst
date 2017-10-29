@@ -6,9 +6,10 @@ import {
   LOGIN_USER_FAIL,
   LOGIN_USER,
   FACEBOOK_LOGIN_USER,
+  BLANK_LOG_IN_DATA
 } from './types';
 
-export const FacebookLoginUser = () => {
+export const FacebookLoginUser = (email, password) => {
   return (dispatch) => {
     dispatch({ type: FACEBOOK_LOGIN_USER });
 
@@ -51,4 +52,8 @@ const loginUserSuccess = (dispatch, user) => {
     type: LOGIN_USER_SUCCESS,
     payload: user
   });
+};
+
+export const blankLogInData = () => {
+  return { type: BLANK_LOG_IN_DATA };
 };

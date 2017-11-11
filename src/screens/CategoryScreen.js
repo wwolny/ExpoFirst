@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import firebase from 'firebase';
+import { View } from 'react-native';
+import { Card, CardSection, HeaderSection, Button } from '../common';
 
-class CategoryScreen extends Component {
+export default class CategoryScreen extends Component {
+  static navigationOptions = {
+    header: null
+  }
 
   render() {
     return (
-      <Text>
-          CategoryScreen
-      </Text>
+      <View>
+        <HeaderSection headerText='Categoriess' />
+        <Card>
+          <CardSection>
+
+          </CardSection>
+        </Card>
+      </View>
     );
   }
 }
-
-export default CategoryScreen;

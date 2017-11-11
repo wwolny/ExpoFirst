@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import {
   emailChangedCreate,
   passwordChangedCreate,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  createCompanyWithEmailAndPassword,
+  blankCreateData
 } from '../actions';
 import {
   Button,
@@ -33,20 +35,41 @@ class CreateAccScreen extends Component {
       this.props.passwordChangedCreate(text);
   }
 
-  onButtonEmailPress() {
+  onButtonCreateCompany() {
     const { newemail, newpassword } = this.props;
 
-    this.props.createUserWithEmailAndPassword({ newemail, newpassword });
+    this.props.createCompanyWithEmailAndPassword({ newemail, newpassword });
   }
 
-  renderButtonEmail() {
-    if (this.props.loading) {
+  onButtonCreateUser() {
+    const { newemail, newpassword } = this.props;
+    this.props.createUserWithEmailAndPassword({ newemail, newpassword });
+    this.props.blankCreateData();
+  }
+
+  onButtonBackToLogIn() {
+    this.props.blankCreateData();
+    this.props.navigation.navigate('auth');
+  }
+
+  renderButtonCreateCompany() {
+    if (this.props.loadingCompany) {
       return <Spinner size="large" />;
     }
-    console.log(this.props.newpassword);
     return (
-      <Button onPress={this.onButtonEmailPress.bind(this)}>
-        Stwórz!
+      <Button onPress={this.onButtonCreateCompany.bind(this)}>
+        Stwórz konto firmy!
+      </Button>
+    );
+  }
+
+  renderButtonCreateUser() {
+    if (this.props.loadingUser) {
+      return <Spinner size="large" />;
+    }
+    return (
+      <Button onPress={this.onButtonCreateUser.bind(this)}>
+        Stwórz użytkownika!
       </Button>
     );
   }
@@ -79,11 +102,15 @@ class CreateAccScreen extends Component {
           </Text>
 
           <CardSection>
-            {this.renderButtonEmail()}
+            {this.renderButtonCreateCompany()}
           </CardSection>
 
           <CardSection>
-            <Button onPress={() => this.props.navigation.navigate('auth')}>
+            {this.renderButtonCreateUser()}
+          </CardSection>
+
+          <CardSection>
+            <Button onPress={this.onButtonBackToLogIn.bind(this)}>
               Wróć!
             </Button>
           </CardSection>
@@ -100,13 +127,15 @@ const styles = {
   }
 };
 const mapStateToProps = ({ createAcc }) => {
-  const { newemail, newpassword, error, loading } = createAcc;
+  const { newemail, newpassword, error, loadingUser, loadingCompany } = createAcc;
 
-  return { newemail, newpassword, error, loading };
+  return { newemail, newpassword, error, loadingUser, loadingCompany };
 };
 
 export default connect(mapStateToProps, {
   emailChangedCreate,
   passwordChangedCreate,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  createCompanyWithEmailAndPassword,
+  blankCreateData
 })(CreateAccScreen);

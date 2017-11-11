@@ -73,7 +73,7 @@ class AuthScreen extends Component {
 
         <CardSection>
           <Input
-            //secureTextEntry
+            secureTextEntry
             label="Password"
             placeholder="password"
             onChangeText={this.onPasswordChange.bind(this)}

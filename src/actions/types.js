@@ -11,5 +11,8 @@ export const CREATE_EMAIL_CHANGED = 'create_email_changed';
 export const CREATE_USER_WITH_EMAIL_AND_PASSWORD = 'create_user_with_email_and_password';
 export const CREATE_USER_SUCCESS = 'create_user_success';
 export const CREATE_USER_FAIL = 'create_user_fail';
+export const BLANK_CREATE_DATA = 'blank_create_data';
+export const CREATE_COMPANY_WITH_EMAIL_AND_PASSWORD = 'create_company_with_email_and_password';
+export const CREATE_COMPANY_SUCCESS = 'create_company_success';
 
 export const PLACE_FETCH_SUCCESS = 'place_fetch_success';

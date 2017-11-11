@@ -8,10 +8,15 @@ export default class MainPropScreen extends Component {
   static navigationOptions = {
     header: null
   }
-
-  LogOut() {
-    firebase.auth().signOut();
-    this.props.navigation.navigate('auth');
+  onPlaceButtonPress() {
+    this.props.navigation.navigate('place');
+  }
+  renderPlaceButton() {
+    return (
+      <Button onPress={this.onPlaceButtonPress.bind(this)}>
+        Miejsce!
+      </Button>
+    );
   }
 
   render() {
@@ -20,9 +25,7 @@ export default class MainPropScreen extends Component {
         <HeaderSection headerText='MainPropScreen' />
         <Card>
           <CardSection>
-            <Button onPress={this.LogOut.bind(this)}>
-              Wyloguj!
-            </Button>
+            {this.renderPlaceButton()}
           </CardSection>
         </Card>
       </View>
